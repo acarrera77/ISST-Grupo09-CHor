@@ -43,27 +43,16 @@ public class EnviarHoraEntradaServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		Date horaEntrada = new Date();
-		Date horaEntradaCompara = new Date(96, 0, 1);
-//		String worker = req.getSession().getAttribute()
+		Date horaSalida = new Date(130, 0, 1);
 		
-		List<Trabajador> trabajadores = (List<Trabajador>) TrabajadorDAOImplementation.getInstance().readAll();
-		List<Registro> registros = (List<Registro>) RegistroDAOImplementation.getInstance().readAll();
-		
-		for (Registro regi: registros) {
-			if(regi.getHoraEntrada().compareTo(horaEntradaCompara) == 0 ) { //|| regi.getWorker().equals(email)
-				regi.setHoraEntrada(horaEntrada);
-				List<Registro> lr = new ArrayList<Registro>();
-				lr.addAll((List<Registro>)
-									req.getSession().getAttribute("registros"));
-				lr.add(regi);
-				req.getSession().setAttribute("registros", lr);
-				System.out.println(registros);
-				RegistroDAOImplementation.getInstance().update(regi);
-			}
-		}
-		
+		Trabajador trabajador = (Trabajador) req.getSession().getAttribute("trabajador");
+		Registro registro = new Registro();
+		registro.setHoraEntrada(horaEntrada);
+		registro.setHoraSalida(horaSalida);
+		registro.setWorker(trabajador);
+		RegistroDAOImplementation.getInstance().update(registro);
 		getServletContext().getRequestDispatcher("/Trabajador.jsp").forward(req,resp);
-		
+				
 	}
 
 }

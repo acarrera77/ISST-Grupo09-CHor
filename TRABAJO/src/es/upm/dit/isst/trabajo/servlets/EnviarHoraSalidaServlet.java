@@ -40,30 +40,21 @@ public class EnviarHoraSalidaServlet extends HttpServlet {
     
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
+
 		Date horaSalida = new Date();
-		Date horaSalidaCompara = new Date(130, 0, 1);
-		
-		List<Trabajador> trabajadores = (List<Trabajador>) TrabajadorDAOImplementation.getInstance().readAll();
-		List<Registro> registros = (List<Registro>) RegistroDAOImplementation.getInstance().readAll();
-		
-		for (Registro regi: registros) {
-			if(regi.getHoraSalida().compareTo(horaSalidaCompara) == 0 ) { //|| regi.getWorker().equals(email)
-				regi.setHoraSalida(horaSalida);
-				List<Registro> lr = new ArrayList<Registro>();
-				lr.addAll((List<Registro>)
-									req.getSession().getAttribute("registros"));
-				lr.add(regi);
-				req.getSession().setAttribute("registros", lr);
-				System.out.println(registros);
-				RegistroDAOImplementation.getInstance().update(regi);
-				break;
-			}
-		}
-		registros.remove(0);
-		
+		@SuppressWarnings("deprecation")
+		Date token = new Date(130, 0, 1);
+		Trabajador trabajador = (Trabajador) req.getSession().getAttribute("trabajador");
+		String email = trabajador.getEmail();
+		try {
+		Registro registro = RegistroDAOImplementation.getInstance().login(email,token);
+		registro.setHoraSalida(horaSalida);
+		RegistroDAOImplementation.getInstance().update(registro);
 		getServletContext().getRequestDispatcher("/Trabajador.jsp").forward(req,resp);
-		
+		} catch(java.lang.NullPointerException exception) {
+			getServletContext().getRequestDispatcher("/Trabajador.jsp").forward(req,resp);
+		} 
+	
 	}
 		
 

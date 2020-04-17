@@ -1,7 +1,10 @@
 package es.upm.dit.isst.trabajo.dao;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Query;
 
 import org.hibernate.Session;
 
@@ -76,6 +79,26 @@ public class RegistroDAOImplementation implements RegistroDAO {
 		List<Registro> r = session.createQuery("from Registro").list();
 		session.getTransaction().commit();
 		session.close();
+		return r;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Registro login(String email, Date horaSalida) {
+		Session session = SessionFactoryService.get().openSession();
+		session.beginTransaction();
+		Registro r = null;
+		Query q = session.createQuery("select p from Registro p where p.worker.email = :email and p.horaSalida = :horaSalida");
+		q.setParameter("email", email);
+		q.setParameter("horaSalida", horaSalida);
+		List<Registro> registros = q.getResultList();
+		if (registros.size() > 0)
+			r= (Registro) (registros.get(0));
+		session.getTransaction().commit();
+		session.close();
+		if (r == null) {
+			return null;
+		}
 		return r;
 	}
 

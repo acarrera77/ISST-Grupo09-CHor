@@ -1,6 +1,7 @@
 package es.upm.dit.isst.trabajo.dao;
 
 import java.util.Collection;
+import java.util.Date;
 
 import es.upm.dit.isst.trabajo.model.Registro;
 
@@ -11,5 +12,6 @@ public interface RegistroDAO {
 	public void update(Registro registro);
 	public void delete(Registro registro);
 	public Collection<Registro> readAll();
+	public Registro login (String email, Date horaSalida);
 
 }

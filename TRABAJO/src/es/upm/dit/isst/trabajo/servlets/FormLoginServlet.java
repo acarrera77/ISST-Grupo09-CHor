@@ -48,68 +48,23 @@ public class FormLoginServlet extends HttpServlet {
 		
 		String email = req.getParameter("email");
 		String password = req.getParameter("password");
-		Date horaEntrada = new Date(96, 0, 1);
-		Date horaSalida = new Date(130, 0, 1);
 
+		Trabajador trabajador = TrabajadorDAOImplementation.getInstance().login(email, password);
+		GestorDeProyectos gestor = GestorDeProyectosDAOImplementation.getInstance().login(email, password);
 
-		List<Trabajador> trabajadores = (List<Trabajador>) TrabajadorDAOImplementation.getInstance().readAll();
-		List<Registro> registros = (List<Registro>) RegistroDAOImplementation.getInstance().readAll();
-		List<GestorDeProyectos> gestores = (List<GestorDeProyectos>) GestorDeProyectosDAOImplementation.getInstance().readAll();
+		if(trabajador != null) {
+			req.getSession().setAttribute("trabajador", trabajador);
+			getServletContext().getRequestDispatcher("/Trabajador.jsp").forward(req,resp);;
 
-		
-			for(Trabajador worker: trabajadores) {
-				if(worker.getPassword().contentEquals(password) && worker.getEmail().contentEquals(email)) {
-					req.getSession().setAttribute("registros", registros);
-					req.getSession().setAttribute("worker", worker);
-					Trabajador trabajador = TrabajadorDAOImplementation.getInstance().read(email);
-					if( null != trabajador) {
-						if (registros.size() == 0){
-							System.out.println(3);
-							Registro registro = new Registro();
-							registro.setWorker(trabajador);
-							registro.setHoraEntrada(horaEntrada);
-							registro.setHoraSalida(horaSalida);
-							RegistroDAOImplementation.getInstance().update(registro);
-							getServletContext().getRequestDispatcher("/Trabajador.jsp").forward(req,resp);
-							break;
-						}else {
-						for(Registro regi: registros) {
-							System.out.println(0);
-							if(regi.getHoraEntrada().compareTo(horaEntrada) == 0 && regi.getHoraSalida().compareTo(horaSalida) == 0) {
-								System.out.println(1);
-								break;
-							}else if (regi.getHoraEntrada().compareTo(horaEntrada) != 0 && regi.getHoraSalida().compareTo(horaSalida) == 0){
-								System.out.println(2);
-								break;
-							}else {
-								System.out.println(4);
-								Registro registro = new Registro();
-								registro.setWorker(trabajador);
-								registro.setHoraEntrada(horaEntrada);
-								registro.setHoraSalida(horaSalida);
-								RegistroDAOImplementation.getInstance().update(registro);
-								break;
-							}
-						}
-						}
-					getServletContext().getRequestDispatcher("/Trabajador.jsp").forward(req,resp);
-					break;
-				}
-				
-			}
-			for(GestorDeProyectos gestor: gestores) {
-				if(gestor.getpassword().contentEquals(password) && gestor.getEmail().contentEquals(email)) {
-					req.getSession().setAttribute("registros", registros);
-					getServletContext().getRequestDispatcher("/Gestor.jsp").forward(req,resp);
-					break;
-				}
-			}
-			if( ADMIN_EMAIL.equals(email) && ADMIN_PASSWORD.equals(password)) {
-				req.getSession().setAttribute("admin", true);
-				req.getSession().setAttribute("registros", registros);
-				getServletContext().getRequestDispatcher("/Trabajador.jsp").forward(req,resp);
-			}
+		} else if (gestor != null){
+			req.getSession().setAttribute("gestor", gestor);
+			getServletContext().getRequestDispatcher("/Gestor.jsp").forward(req,resp);;
+
+			
+		} else {
+			getServletContext().getRequestDispatcher("/index.html").forward(req,resp);
 		}
+			
 			
 }
 
@@ -132,3 +87,56 @@ public class FormLoginServlet extends HttpServlet {
 //String f = fano + "-"+ fmes+"-" + fdia;
 //System.out.println(f);
 //('dia' + 'mes' + 'ano');
+//for(Trabajador worker: trabajadores) {
+//	if(worker.getPassword().contentEquals(password) && worker.getEmail().contentEquals(email)) {
+//		req.getSession().setAttribute("registros", registros);
+//		req.getSession().setAttribute("worker", worker);
+//		Trabajador trabajador = TrabajadorDAOImplementation.getInstance().read(email);
+//		if( null != trabajador) {
+//			if (registros.size() == 0){
+//				System.out.println(3);
+//				Registro registro = new Registro();
+//				registro.setWorker(trabajador);
+//				registro.setHoraEntrada(horaEntrada);
+//				registro.setHoraSalida(horaSalida);
+//				RegistroDAOImplementation.getInstance().update(registro);
+//				getServletContext().getRequestDispatcher("/Trabajador.jsp").forward(req,resp);
+//				break;
+//			}else {
+//			for(Registro regi: registros) {
+//				System.out.println(0);
+//				if(regi.getHoraEntrada().compareTo(horaEntrada) == 0 && regi.getHoraSalida().compareTo(horaSalida) == 0) {
+//					System.out.println(1);
+//					break;
+//				}else if (regi.getHoraEntrada().compareTo(horaEntrada) != 0 && regi.getHoraSalida().compareTo(horaSalida) == 0){
+//					System.out.println(2);
+//					break;
+//				}else {
+//					System.out.println(4);
+//					Registro registro = new Registro();
+//					registro.setWorker(trabajador);
+//					registro.setHoraEntrada(horaEntrada);
+//					registro.setHoraSalida(horaSalida);
+//					RegistroDAOImplementation.getInstance().update(registro);
+//					break;
+//				}
+//			}
+//			}
+//		getServletContext().getRequestDispatcher("/Trabajador.jsp").forward(req,resp);
+//		break;
+//	}
+//	
+//}
+//for(GestorDeProyectos gestor: gestores) {
+//	if(gestor.getpassword().contentEquals(password) && gestor.getEmail().contentEquals(email)) {
+//		req.getSession().setAttribute("registros", registros);
+//		getServletContext().getRequestDispatcher("/Gestor.jsp").forward(req,resp);
+//		break;
+//	}
+//}
+//if( ADMIN_EMAIL.equals(email) && ADMIN_PASSWORD.equals(password)) {
+//	req.getSession().setAttribute("admin", true);
+//	req.getSession().setAttribute("registros", registros);
+//	getServletContext().getRequestDispatcher("/Trabajador.jsp").forward(req,resp);
+//}
+//}
