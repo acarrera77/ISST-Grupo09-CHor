@@ -13,13 +13,15 @@ public class InformeDAOImplementation implements InformeDAO {
 
 	private static InformeDAOImplementation instance = null;
 	
+	private InformeDAOImplementation() {
+		
+	}
+	
 	public static InformeDAOImplementation getInstance() {
 		if (null == instance)
 			instance = new InformeDAOImplementation();
 		return instance;
 	}
-	
-	
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -31,6 +33,7 @@ public class InformeDAOImplementation implements InformeDAO {
 		session.close();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void delete(Informe informe) {
 		Session session = SessionFactoryService.get().openSession();
@@ -40,11 +43,12 @@ public class InformeDAOImplementation implements InformeDAO {
 		session.close();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Informe read(Integer informeID) {
+	public Informe read(Integer informeId) {
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
-		Informe informe = session.load(Informe.class, informeID);
+		Informe informe = session.get(Informe.class, informeId);
 		session.getTransaction().commit();
 		session.close();
 		return informe;
@@ -55,12 +59,13 @@ public class InformeDAOImplementation implements InformeDAO {
 	public Collection<Informe> readAll() {
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
-		Collection<Informe> informes = session.createQuery("from Informe").list();
+		List<Informe> informes = session.createQuery("from Informe").list();
 		session.getTransaction().commit();
 		session.close();
 		return informes;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void update(Informe informe) {
 		Session session = SessionFactoryService.get().openSession();

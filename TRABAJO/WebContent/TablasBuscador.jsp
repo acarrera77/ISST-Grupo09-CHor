@@ -6,19 +6,28 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Proyectos</title>
 </head>
 <body>
 
-<form action="HoraComienzoProyectoServlet">
-	<button type="submit">Hora de Comienzo</button>
-</form>
+<h2>Registros</h2>
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>HORA ENTRADA</th>
+    <th>DESCANSOS</th>
+    <th>HORA SALIDA</th>
+  </tr>
+<c:forEach items="${lr}" var="lri">
+<tr>
+<td>${lri.id}</td>
+<td>${lri.horaEntrada}</td> 
+<td>${lri.horaDescanso}</td>
+<td>${lri.horaSalida}</td>
+</tr>
+</c:forEach>
+</table>
 
-<form action="HoraFinalizacionProyectoServlet">
-	<button type="submit">Hora de Finalización</button>
-</form>
-
-<form action="GoBackServlet">
+<form action="GoBackGestorServlet">
 	<button type="submit">Go back</button>
 </form>
 

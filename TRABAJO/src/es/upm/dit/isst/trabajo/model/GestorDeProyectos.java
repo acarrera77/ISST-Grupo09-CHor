@@ -1,9 +1,12 @@
 package es.upm.dit.isst.trabajo.model;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class GestorDeProyectos implements Serializable{
@@ -15,6 +18,14 @@ public class GestorDeProyectos implements Serializable{
 	
 	private String password;
 	private String nombre;
+	
+	@OneToMany(mappedBy = "gestores", fetch = FetchType.LAZY)
+	
+	private Collection<Asociaciones> asociacionesgestores;
+	
+	@OneToMany(mappedBy = "gestor", fetch = FetchType.LAZY)
+	
+	private Collection<Informe> informesgestores;
 	
 	
 	//Getters y setters
@@ -36,7 +47,22 @@ public class GestorDeProyectos implements Serializable{
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	
 
+	public Collection<Asociaciones> getAsociacionesgestores() {
+		return asociacionesgestores;
+	}
+	public void setAsociacionesgestores(Collection<Asociaciones> asociacionesgestores) {
+		this.asociacionesgestores = asociacionesgestores;
+	}
+	
+	
+	public Collection<Informe> getInformesgestores() {
+		return informesgestores;
+	}
+	public void setInformesgestores(Collection<Informe> informesgestores) {
+		this.informesgestores = informesgestores;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+Integer<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>    
@@ -13,8 +13,8 @@
 
 <h2>Asignar proyecto a empleado:</h2>
 <form action="AsignarProyectoServlet">
-	<input type="text" name="name" placeholder="Nombre y Apellidos">
-	<input type="text" name="proyecto" placeholder="Proyecto">
+	<input type="text" name="email" placeholder="Trabajador">
+	<input type="text" name="proyectoId" placeholder="Proyecto">
 	<button type="submit">Asignar</button>
 </form>
 

@@ -20,11 +20,14 @@ public class Registro implements Serializable {
 	
 	private Date horaEntrada;
 	private Date horaSalida;
-	private String horaDescanso;
+	private Integer horaDescanso;
 
 
 	@ManyToOne
 	private Trabajador worker;
+	
+	@ManyToOne
+	private Proyecto project;
 	
 	
 	public Registro() {
@@ -96,12 +99,12 @@ public class Registro implements Serializable {
 	}
 
 
-	public String getHoraDescanso() {
+	public Integer getHoraDescanso() {
 		return horaDescanso;
 	}
 
 
-	public void setHoraDescanso(String horaDescanso) {
+	public void setHoraDescanso(Integer horaDescanso) {
 		this.horaDescanso = horaDescanso;
 	}
 
@@ -116,6 +119,16 @@ public class Registro implements Serializable {
 	}
 
 
+	public Proyecto getProject() {
+		return project;
+	}
+
+
+	public void setProject(Proyecto project) {
+		this.project = project;
+	}
+
+	
 
 	
 	

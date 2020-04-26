@@ -6,19 +6,21 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>Informes</title>
 </head>
 <body>
 
-<form action="EnviarHoraEntradaServlet">
-	<h2>Hora de Entrada</h2>
-	<input type="text" name="proyectoId" placeholder="Proyecto ID">
-	<button type="submit" name="horaEntrada">Enviar</button>
+<form action="SubirInformeServlet">
+	<button type="submit">Subir Informe</button>
 </form>
 
-<form action="GoBackServlet">
+<form action="DescargarInformeServlet">
+	<button type="submit">Descargar Informe</button>
+</form>
+
+<form action="GoBackGestorServlet">
 	<button type="submit">Go back</button>
 </form>
-
 
 </body>
 </html>

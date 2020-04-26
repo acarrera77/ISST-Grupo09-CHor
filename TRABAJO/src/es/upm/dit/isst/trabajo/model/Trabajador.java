@@ -1,7 +1,6 @@
 package es.upm.dit.isst.trabajo.model;
 
 import java.io.Serializable;
-import java.lang.annotation.Repeatable;
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -20,9 +19,17 @@ public class Trabajador implements Serializable {
 	private String password;
 	private String name;
 	
-	@OneToMany(mappedBy = "worker", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "worker", fetch = FetchType.LAZY)
 	
 	private Collection<Registro> registrostrabajadores;
+	
+	@OneToMany(mappedBy = "trabajadores", fetch = FetchType.LAZY)
+	
+	private Collection<Asociaciones> asociacionestrabajadores;
+	
+	@OneToMany(mappedBy = "trabajador", fetch = FetchType.LAZY)
+	
+	private Collection<Informe> informestrabajadores;
 	
 	
 	public Trabajador() {
@@ -90,5 +97,22 @@ public class Trabajador implements Serializable {
 	public void setRegistrosTrabajadores(Collection<Registro> registrostrabajadores) {
 		this.registrostrabajadores = registrostrabajadores;
 	}
+
+	public Collection<Asociaciones> getAsociacionesTrabajadores() {
+		return asociacionestrabajadores;
+	}
+
+	public void setAsociacionesTrabajadores(Collection<Asociaciones> asociacionestrabajadores) {
+		this.asociacionestrabajadores = asociacionestrabajadores;
+	}
+
+	public Collection<Informe> getInformestrabajadores() {
+		return informestrabajadores;
+	}
+
+	public void setInformestrabajadores(Collection<Informe> informestrabajadores) {
+		this.informestrabajadores = informestrabajadores;
+	}
+	
 
 }

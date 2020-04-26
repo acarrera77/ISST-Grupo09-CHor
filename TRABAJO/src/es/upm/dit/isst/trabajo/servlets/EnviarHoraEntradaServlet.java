@@ -14,9 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.Session;
 
+import es.upm.dit.isst.trabajo.dao.AsociacionesDAOImplementation;
+import es.upm.dit.isst.trabajo.dao.ProyectoDAOImplementation;
 import es.upm.dit.isst.trabajo.dao.RegistroDAOImplementation;
 import es.upm.dit.isst.trabajo.dao.SessionFactoryService;
 import es.upm.dit.isst.trabajo.dao.TrabajadorDAOImplementation;
+import es.upm.dit.isst.trabajo.model.Asociaciones;
+import es.upm.dit.isst.trabajo.model.Proyecto;
 import es.upm.dit.isst.trabajo.model.Registro;
 import es.upm.dit.isst.trabajo.model.Trabajador;
 
@@ -26,14 +30,14 @@ import es.upm.dit.isst.trabajo.model.Trabajador;
 @WebServlet("/EnviarHoraEntradaServlet")
 public class EnviarHoraEntradaServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public EnviarHoraEntradaServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public EnviarHoraEntradaServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -41,18 +45,30 @@ public class EnviarHoraEntradaServlet extends HttpServlet {
 
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
+
 		Date horaEntrada = new Date();
 		Date horaSalida = new Date(130, 0, 1);
-		
+		Integer horaDescanso = 0;
+		String proyectoId = req.getParameter("proyectoId");
+		Proyecto project = ProyectoDAOImplementation.getInstance().read(proyectoId);
+
 		Trabajador trabajador = (Trabajador) req.getSession().getAttribute("trabajador");
-		Registro registro = new Registro();
-		registro.setHoraEntrada(horaEntrada);
-		registro.setHoraSalida(horaSalida);
-		registro.setWorker(trabajador);
-		RegistroDAOImplementation.getInstance().update(registro);
-		getServletContext().getRequestDispatcher("/Trabajador.jsp").forward(req,resp);
-				
+		String email = trabajador.getEmail();
+
+		Asociaciones asociacion = AsociacionesDAOImplementation.getInstance().login(email, proyectoId);
+
+		if(null != project && null != asociacion) {
+			Registro registro = new Registro();
+			registro.setHoraEntrada(horaEntrada);
+			registro.setHoraSalida(horaSalida);
+			registro.setHoraDescanso(horaDescanso);
+			registro.setWorker(trabajador);
+			registro.setProject(project);
+			RegistroDAOImplementation.getInstance().update(registro);
+			getServletContext().getRequestDispatcher("/Trabajador.jsp").forward(req,resp);
+		}else {
+			getServletContext().getRequestDispatcher("/Trabajador.jsp").forward(req,resp);
+		}	
 	}
 
 }

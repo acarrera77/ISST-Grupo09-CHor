@@ -15,10 +15,6 @@
 	<button type="submit">Hora de Entrada</button>
 </form>
 
-<form action="ProyectosServlet">
-	<button type="submit">Proyectos</button>
-</form>
-
 <form action="DescansosServlet">
 	<button type="submit">Descansos</button>
 </form>

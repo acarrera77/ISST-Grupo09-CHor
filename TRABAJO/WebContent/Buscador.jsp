@@ -6,19 +6,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>Buscador</title>
 </head>
-<body>
 
-<form action="EnviarHoraEntradaServlet">
-	<h2>Hora de Entrada</h2>
-	<input type="text" name="proyectoId" placeholder="Proyecto ID">
-	<button type="submit" name="horaEntrada">Enviar</button>
+<form action="EnviarBuscadorServlet">
+	<input type="text" name="email" placeholder="Trabajador">
+	<input type="text" name="proyectoId" placeholder="Proyecto">
+	<input type="submit" value="Buscar" />
 </form>
 
-<form action="GoBackServlet">
+<form action="GoBackGestorServlet">
 	<button type="submit">Go back</button>
 </form>
-
-
+<body>
 </body>
 </html>

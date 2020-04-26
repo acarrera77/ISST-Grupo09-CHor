@@ -8,7 +8,7 @@ import javax.persistence.Query;
 
 import org.hibernate.Session;
 
-
+import es.upm.dit.isst.trabajo.model.Asociaciones;
 import es.upm.dit.isst.trabajo.model.Registro;
 
 public class RegistroDAOImplementation implements RegistroDAO {
@@ -100,6 +100,27 @@ public class RegistroDAOImplementation implements RegistroDAO {
 			return null;
 		}
 		return r;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Registro> login2(String email, String proyectoId) {
+		
+		Session session = SessionFactoryService.get().openSession();
+		session.beginTransaction();
+		Query q = session.createQuery("select p from Registro p where p.worker.email = :email and p.project.proyectoId = :proyectoId");
+		q.setParameter("email", email);
+		q.setParameter("proyectoId", proyectoId);
+		List<Registro> registro = q.getResultList();
+		if (registro.size() > 0) {
+			session.getTransaction().commit();
+			session.close();
+			return registro;
+		}
+		session.getTransaction().commit();
+		session.close();
+
+		return null;
 	}
 
 }
