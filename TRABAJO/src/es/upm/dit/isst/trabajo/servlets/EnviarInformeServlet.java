@@ -1,10 +1,13 @@
 package es.upm.dit.isst.trabajo.servlets;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Paths;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +28,7 @@ import es.upm.dit.isst.trabajo.model.Trabajador;
  * Servlet implementation class EnviarInformeServlet
  */
 @WebServlet("/EnviarInformeServlet")
+@MultipartConfig
 public class EnviarInformeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -39,13 +43,16 @@ public class EnviarInformeServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		String email = req.getParameter("email");
 		String ano = req.getParameter("ano");
 		String mes = req.getParameter("mes");
 
-		//Byte get parameter
+		Part filePart = req.getPart("informe");
+		InputStream fileContent = filePart.getInputStream();
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		byte[] buffer = new byte[1024];
 		
 		Trabajador trabajador = TrabajadorDAOImplementation.getInstance().read(email);
 
@@ -54,11 +61,14 @@ public class EnviarInformeServlet extends HttpServlet {
 		if(null != trabajador) {
 
 			Informe informe = new Informe();
+			for (int length = 0; (length = fileContent.read(buffer)) > 0;) {
+				output.write(buffer, 0, length);
+			}
 			informe.setAno(ano);
 			informe.setMes(mes);
 			informe.setGestor(gestor);
 			informe.setTrabajador(trabajador);
-//			informe.setInforme(informe);
+			informe.setInforme(output.toByteArray());
 			InformeDAOImplementation.getInstance().update(informe);
 			getServletContext().getRequestDispatcher("/Gestor.jsp").forward(req,resp);
 

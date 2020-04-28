@@ -20,5 +20,6 @@
 		<mapping class="es.upm.dit.isst.trabajo.model.Proyecto" />
 		<mapping class="es.upm.dit.isst.trabajo.model.Informe" />
 		<mapping class="es.upm.dit.isst.trabajo.model.Asociaciones" />
+		<mapping class="es.upm.dit.isst.trabajo.model.RRHH" />
 	</session-factory>
 </hibernate-configuration>

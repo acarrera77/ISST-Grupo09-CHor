@@ -6,23 +6,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Informes</title>
+<title>Buscador</title>
 </head>
-<body>
 
-
-<form action="EnviarInformeServlet" method="post" enctype="multipart/form-data">
-	<h2>Subir Informe</h2>
+<form action="EnviarBuscadorRRHHServlet">
 	<input type="text" name="email" placeholder="Trabajador">
-	<input type="text" name="mes" placeholder="Mes">
-	<input type="text" name="ano" placeholder="Año">
-	<input type="file" name="informe"/>
-	<button type="submit">Enviar</button>
+	<input type="text" name="ano" placeholder="Ano">
+	<input type="submit" value="Buscar" />
 </form>
 
-<form action="GoBackGestorServlet">
+<form action="GoBackRRHHServlet">
 	<button type="submit">Go back</button>
 </form>
-
+<body>
 </body>
 </html>

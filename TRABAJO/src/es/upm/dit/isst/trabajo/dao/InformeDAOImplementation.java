@@ -8,6 +8,7 @@ import javax.persistence.Query;
 import org.hibernate.Session;
 
 import es.upm.dit.isst.trabajo.model.Informe;
+import es.upm.dit.isst.trabajo.model.Registro;
 
 public class InformeDAOImplementation implements InformeDAO {
 
@@ -74,5 +75,50 @@ public class InformeDAOImplementation implements InformeDAO {
 		session.getTransaction().commit();
 		session.close();
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Informe login(String email, String mes, String ano) {
+		
+		Session session = SessionFactoryService.get().openSession();
+		session.beginTransaction();
+		Informe i = null;
+		Query q = session.createQuery("select p from Informe p where p.trabajador.email = :email and p.mes = :mes and p.ano =:ano");
+		q.setParameter("email", email);
+		q.setParameter("mes", mes);
+		q.setParameter("ano", ano);
+		List<Informe> informe = q.getResultList();
+		if (informe.size() > 0) 
+			i = (Informe) (informe.get(0));
+		session.getTransaction().commit();
+		session.close();
+		if (i == null) {
+			return null;
+		}
+		return i;
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Informe> login2(String email, String ano){
+		
+		
+		Session session = SessionFactoryService.get().openSession();
+		session.beginTransaction();
+		Query q = session.createQuery("select p from Informe p where p.trabajador.email = :email and p.ano = :ano");
+		q.setParameter("email", email);
+		q.setParameter("ano", ano);
+		List<Informe> informe = q.getResultList();
+		if (informe.size() > 0) {
+			session.getTransaction().commit();
+			session.close();
+			return informe;
+		}
+		session.getTransaction().commit();
+		session.close();
 
+		return null;
+		
+	}
 }

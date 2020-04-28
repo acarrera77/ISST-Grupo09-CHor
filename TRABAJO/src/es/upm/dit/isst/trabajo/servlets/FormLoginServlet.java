@@ -15,12 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 
 import es.upm.dit.isst.trabajo.dao.GestorDeProyectosDAOImplementation;
+import es.upm.dit.isst.trabajo.dao.RRHHDAOImplementation;
 import es.upm.dit.isst.trabajo.dao.RegistroDAOImplementation;
 import es.upm.dit.isst.trabajo.dao.SessionFactoryService;
 import es.upm.dit.isst.trabajo.dao.TrabajadorDAOImplementation;
 import es.upm.dit.isst.trabajo.model.Registro;
 import es.upm.dit.isst.trabajo.model.Trabajador;
 import es.upm.dit.isst.trabajo.model.GestorDeProyectos;
+import es.upm.dit.isst.trabajo.model.RRHH;
 
 
 /**
@@ -51,6 +53,7 @@ public class FormLoginServlet extends HttpServlet {
 
 		Trabajador trabajador = TrabajadorDAOImplementation.getInstance().login(email, password);
 		GestorDeProyectos gestor = GestorDeProyectosDAOImplementation.getInstance().login(email, password);
+		RRHH rrhh = RRHHDAOImplementation.getInstance().login(email, password);
 
 		if(trabajador != null) {
 			req.getSession().setAttribute("trabajador", trabajador);
@@ -61,7 +64,10 @@ public class FormLoginServlet extends HttpServlet {
 			getServletContext().getRequestDispatcher("/Gestor.jsp").forward(req,resp);;
 
 			
-		} else {
+		} else if(rrhh !=null) {
+			req.getSession().setAttribute("rrhh", rrhh);
+			getServletContext().getRequestDispatcher("/RRHH.jsp").forward(req,resp);;
+		}else {
 			getServletContext().getRequestDispatcher("/index.html").forward(req,resp);
 		}
 			
